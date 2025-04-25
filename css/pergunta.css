@@ -1,0 +1,68 @@
+@font-face {
+    font-family: 'DangerZone';
+    src: url('../assets/DangerZoneWarning.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-image: url('../assets/background-pergunta.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#boxPergunta{
+    background-color:rgba(37, 37, 37, 0.87);
+    width: 80%;
+    padding: 20px;
+    color: #fff;
+    border-radius: 0.375em;
+}
+
+#boxPergunta #enunciado{
+    text-align: justify;
+}
+
+#boxPergunta #alternativas{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#boxPergunta #enunciado #numPergunta{
+    padding: 5px;
+    background-color: #cf0001;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+#boxPergunta #enunciado #pNumeroPergunta{
+    font-weight: bold;
+}
+
+#boxPergunta #alternativas button{
+    text-align: justify;
+    margin: 5px 0;
+    font-weight: bold;
+}
+
+#btnPausar{
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    padding: 10px;
+    border: none;
+    background-color: #fff;
+    border-radius: 0.375em;
+    color: #000;
+    font-weight: 500;
+    transition: 0.2s;
+}

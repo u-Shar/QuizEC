@@ -1,0 +1,35 @@
+@font-face {
+    font-family: 'DangerZone';
+    src: url('../assets/DangerZoneWarning.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #666;
+}
+
+#menu{
+    background-image: url("../assets/background-papiro.png");
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 50%;
+    border-radius: 20px;
+}
+
+#menu h1{
+    font-family: 'DangerZone';
+}
+
+#menu button{
+   margin: 10px 0;
+   width: 60%;
+}

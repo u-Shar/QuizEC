@@ -1,0 +1,87 @@
+@font-face {
+    font-family: 'DangerZone';
+    src: url('../assets/DangerZoneWarning.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-image: url('../assets/background-floresta.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#timer {
+    font-size: 3em;
+    margin-bottom: 20px;
+    font-family: 'DangerZone', sans-serif;
+}
+
+.code-inputs {
+    display: flex;
+    gap: 10px;
+}
+
+.code-inputs input {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 2em;
+}
+
+#resetBtn{
+    display: block;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 10px;
+    border: none;
+    background-color: #fff;
+    border-radius: 0.375em;
+    color: #000;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+#btnPausar{
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    padding: 10px;
+    border: none;
+    background-color: #fff;
+    border-radius: 0.375em;
+    color: #000;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+#resetBtn:hover{
+    filter: brightness(0.8);
+    cursor: pointer;
+}
+
+#divTimer{
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 400px;
+    height: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375em;
+}
+
+#imgCadeado{
+    max-width: 60%;
+    filter: sepia(1);
+}

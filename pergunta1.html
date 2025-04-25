@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Temporizador com Cadeado</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/pergunta.css">
+</head>
+<body>
+    <button id="btnPausar">Pausar Música</button>
+
+    <div id="boxPergunta" class="row">
+        <div id="enunciado" class="col-6">
+            <p id="pNumeroPergunta"><span id='numPergunta'>#1</span> Pergunta 1 - ODS 3</p>
+
+            <p>Em 2015, todos os países membros da ONU firmaram um pacto histórico: a Agenda 2030, composta por 17 Objetivos de Desenvolvimento Sustentável (ODS). Essa agenda visa promover o progresso econômico aliado à inclusão social e à proteção ambiental, reconhecendo que erradicar a pobreza, proteger o planeta e garantir a paz são metas interdependentes.</p>
+
+            <p>No entanto, apesar dos avanços, muitos ainda confundem os ODS com metas econômicas ou estratégias comerciais. Considerando esse contexto, qual das opções abaixo representa de fato um dos ODS, refletindo sua essência transformadora?</p>
+        </div>
+        <div id="alternativas" class="col-6">
+           
+        </div>
+    </div>
+    
+    
+    <audio id="backgroundAudio" loop>
+		<source src="./assets/musicaDeFundo.mp3" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+	<audio id="respostaCerta">
+		<source src="./assets/resposta-certa.mp3" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+	<audio id="respostaErrada">
+		<source src="./assets/resposta-errada.mp3" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+
+
+    <script src="./js/jquery-3.7.1.min.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/sweetalert2@11.js"></script>
+    <script>
+        $(document).ready(function () {
+            
+            Swal.fire({
+                title: "Vamos começar!",
+                showConfirmButton: true,
+                confirmButtonText: 'Ok',
+                background: "#fff url(./assets/background-papiro.png)",
+                color: "#000",
+                didOpen: () =>{
+                    $("body").removeClass('swal2-height-auto');
+                },
+            }).then(() => {
+                playBackgroundAudio();
+            });
+
+            const backgroundAudio = document.getElementById('backgroundAudio');
+            const respostaCerta = document.getElementById('respostaCerta');
+            const respostaErrada = document.getElementById('respostaErrada');
+        
+            let comMusica = 0;
+            function playBackgroundAudio() {
+                backgroundAudio.play();
+                comMusica = 1;
+
+                $("#btnPausar").html("Pausar Música");
+            }
+
+            function stopBackgroundAudio() {
+                backgroundAudio.pause();
+                comMusica = 0;
+
+                $("#btnPausar").html("Tocar Música");
+
+            }
+
+            $("#btnPausar").on("click", function(){
+                if(comMusica == 0){
+                    playBackgroundAudio();
+                }else{
+                    stopBackgroundAudio();
+                }
+            });
+
+            embaralhaPerguntas();
+            function embaralhaPerguntas(){
+                const alternativas = [
+                    { classe: 'a1', texto: 'Ampliar a produção de petróleo e gás natural para fortalecer economias emergentes.' },
+                    { classe: 'a2', texto: 'Estimular o crescimento de centros urbanos e industriais para gerar empregos.' },
+                    { classe: 'a3', texto: 'Eliminar todas as formas de pobreza, promovendo acesso a renda, saúde e educação.' },
+                    { classe: 'a4', texto: 'Incentivar a competitividade global por meio da liberalização do comércio internacional.' },
+                    { classe: 'a5', texto: 'Reduzir o número de áreas de proteção ambiental para expandir o agronegócio.' },
+                ];
+
+                // Embaralha a ordem das alternativas
+                const embaralhadas = [...alternativas].sort(() => Math.random() - 0.5);
+
+                // Letras a serem atribuídas após embaralhamento
+                const letras = ['A', 'B', 'C', 'D', 'E'];
+
+                // Cria os botões com letra conforme a ordem atual
+                const botoes = embaralhadas.map((alt, index) => `
+                    <button class="btn btn-outline-light ${alt.classe}">
+                        <span class="badge text-bg-light">${letras[index]}</span> ${alt.texto}
+                    </button>
+                `);
+
+                // Insere os botões na div
+                $('#alternativas').html(botoes.join(''));
+
+                $("#alternativas button").on("click", function(e){
+                    e.preventDefault();
+
+                    if($(this).hasClass("a3")){
+                        stopBackgroundAudio();
+
+                        respostaCerta.play();  
+
+                        Swal.fire({
+                            imageUrl: "./assets/icon-check.png",
+                            imageHeight: 100,
+                            title: "Você acertou!",
+                            html: `
+                                <p>Parabéns, você acertou! O primeiro número do código é: <br><strong style="font-size:60px">3</strong></p>
+                                <p>Dirija-se ao próximo computador para receber o próximo número</p>
+                            `,
+                            background: "#fff url(./assets/background-papiro.png)",
+                            color: "#000",
+                            didOpen: () =>{
+                                $("body").removeClass('swal2-height-auto');
+                            }
+                        }).then((result) => {
+                            embaralhaPerguntas();
+                            playBackgroundAudio();
+                        });
+                    }else{
+                        stopBackgroundAudio();
+
+                        respostaErrada.currentTime = 0;
+                        respostaErrada.play();
+
+                        Swal.fire({
+                            imageUrl: "./assets/icon-x.png",
+                            imageHeight: 100,
+                            title: "Ops... Você errou!",
+                            html: `
+                                <p>Essa não é a resposta correta! Você pode tentar novamente e/ou visualizar a dica!</p>
+                            `,
+                            didOpen: () =>{
+                                $("body").removeClass('swal2-height-auto');
+                            },
+                            showCancelButton: true,
+                            cancelButtonText: "Ver dica",
+                            confirmButtonText: "Tentar novamente",
+                            confirmButtonColor: "#02d569",
+                            reverseButtons: true,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            background: "#fff url(./assets/background-papiro.png)",
+                            color: "#000",
+                        }).then((result) => {
+                            if(result.isConfirmed){
+                                respostaErrada.pause();  
+                                embaralhaPerguntas();
+                                playBackgroundAudio();
+                            }else{
+                                Swal.fire({
+                                    imageUrl: "./assets/dica.png",
+                                    imageHeight: 100,
+                                    title: "Dica Verde!",
+                                    html: `
+                                        <p>Cuidado com metas que brilham, mas não iluminam. A verdadeira transformação começa onde termina a desigualdade. Você saberia onde está a linha entre crescimento e justiça?</p>
+                                    `,
+                                    didOpen: () =>{
+                                        $("body").removeClass('swal2-height-auto');
+                                    },
+                                    showCancelButton: false,
+                                    confirmButtonText: "Tentar novamente",
+                                    confirmButtonColor: "#01572A",
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                    background: "#02d569",
+                                    color: "#000",
+                                }).then((result) => {
+                                    embaralhaPerguntas();
+                                    playBackgroundAudio();
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        });
+    </script>
+</body>
+</html>

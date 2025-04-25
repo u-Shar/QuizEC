@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/menu.css">
+</head>
+<body>
+    <div id="menu">
+        <h1>MENU</h1>
+
+        <button class="btn btn-light" onclick='navegarPara("pergunta1.html")'>Pergunta 1</button>
+        <button class="btn btn-light" onclick='navegarPara("pergunta2.html")'>Pergunta 2</button>
+        <button class="btn btn-light" onclick='navegarPara("pergunta3.html")'>Pergunta 3</button>
+        <button class="btn btn-light" onclick='navegarPara("pergunta4.html")'>Pergunta 4</button>
+        <button class="btn btn-light" onclick='navegarPara("temporizador.html")'>Tela do Cadeado</button>
+    </div>
+
+    <script src="./js/jquery-3.7.1.min.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/sweetalert2@11.js"></script>
+    <script>
+        function navegarPara(pagina){
+            window.location.href = '/'+pagina
+        }
+    </script>
+</body>
+</html>
