@@ -101,7 +101,7 @@
 
             let agora = Date.now();
             let elapsedTime = Math.floor((agora - startTime) / 1000);
-            const remainingTime = TIMER_DURATION - elapsed;
+            const remainingTime = TIMER_DURATION - elapsedTime;
 
             if(remainingTime == 0){
                 localStorage.setItem("recomeçar", "sim");
