@@ -4,12 +4,25 @@
     <meta charset="UTF-8">
     <title>Temporizador com Cadeado</title>
     <link rel="stylesheet" href="./css/temporizador.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
 </head>
 <body>
-    <button id="btnPausar">Pausar Música</button>
+    <div id='botoesTopo'>
+        <div id="itens">
+            <button id="btnPausar">Pausar Música</button>
+            <select id="selectRodada" class='form-select'>
+                <option value="rodada1">Rodada 1</option>
+                <option value="rodada2">Rodada 2</option>
+                <option value="rodada3">Rodada 3</option>
+                <option value="rodada4">Rodada 4</option>
+                <option value="rodada5">Rodada 5</option>
+                <option value="rodada6">Rodada 6</option>
+            </select>
+        </div>
+    </div>
 
     <div id="divTimer">
-        <div id="timer">10:00</div>
+        <div id="timer">00:00</div>
 
         <img src="./assets/cadeado.png" id="imgCadeado">
 
@@ -37,10 +50,54 @@
 	</audio>
 
     <script src="./js/jquery-3.7.1.min.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
     <script src="./js/sweetalert2@11.js"></script>
+    <script src="./codigos.js"></script>
     <script>
         $(document).ready(function(){
-            const TIMER_DURATION = 15 * 60; // 10 minutos em segundos
+            let rodada;
+            if(localStorage.getItem("rodada") != null && localStorage.getItem("rodada") != ""){
+                $("#selectRodada").val(localStorage.getItem("rodada")).trigger("change");
+            }
+            
+            rodada = $("#selectRodada").val();
+
+            let codigos = getCodigos();
+            console.log(codigos);
+            let codigo = codigos[rodada];
+
+            let codStr = codigo.toString();
+
+            let num1 = parseInt(codStr[0]);
+            let num2 = parseInt(codStr[1]);
+            let num3 = parseInt(codStr[2]);
+            let num4 = parseInt(codStr[3]);
+
+            console.log(codigo);
+
+            $("#selectRodada").on("change", function(){
+                rodada = $(this).val();
+                localStorage.setItem("rodada", rodada);
+                codigo = codigos[rodada];
+
+                codStr = codigo.toString();
+
+                num1 = parseInt(codStr[0]);
+                num2 = parseInt(codStr[1]);
+                num3 = parseInt(codStr[2]);
+                num4 = parseInt(codStr[3]);
+
+            console.log(codigo);
+
+            });
+
+            let tempo = 10;
+
+            if(localStorage.getItem("selectedMinutes") != null && localStorage.getItem("selectedMinutes") != ""){
+                tempo = parseInt(localStorage.getItem("selectedMinutes"));
+            }
+
+            const TIMER_DURATION = tempo * 60; // 10 minutos em segundos
             const startKey = "timerStart";
 
             let startTime = localStorage.getItem(startKey);
@@ -189,7 +246,7 @@
                 if (code.length === 4) {
                     localStorage.setItem("recomeçar", "sim");
 
-                    if (code === '3715') {
+                    if (code == codigo) {
                         clearInterval(timerInterval);  // Para o temporizador
                         stopBackgroundAudio();       // Para o áudio de fundo
                         successAudio.play();           // Toca o áudio de sucesso
@@ -212,31 +269,43 @@
             // Resetar o temporizador com senha
             $('#resetBtn').on('click', function () {
                 Swal.fire({
-                    title: 'Digite a senha para resetar o temporizador',
-                    input: 'password',
-                    inputPlaceholder: 'Senha',
+                    title: 'Digite a senha e escolha o tempo',
+                    html: `
+                         <select id="swal-minutes" class="form-control">
+                            <option value="5">5 minutos</option>
+                            <option value="10">10 minutos</option>
+                            <option value="15">15 minutos</option>
+                            <option value="20">20 minutos</option>
+                        </select>
+
+                        <input id="swal-password" type="password" class="form-control mb-3" placeholder="Senha">
+                        
+                    `,
                     showCancelButton: true,
                     confirmButtonText: 'Resetar',
                     cancelButtonText: 'Cancelar',
-                    inputValidator: (value) => {
-                        if (value !== '24042025') {
-                            return 'Senha incorreta!';
+                    preConfirm: () => {
+                        const password = document.getElementById('swal-password').value;
+                        const minutes = document.getElementById('swal-minutes').value;
+
+                        if (password !== '24042025') {
+                            Swal.showValidationMessage('Senha incorreta!');
+                            return false;
                         }
+
+                        return { password, minutes };
                     },
-                    didOpen: () =>{
+                    didOpen: () => {
                         $("body").removeClass('swal2-height-auto');
                     },
-                    color: "#000",
-                    customClass: {
-                        input: "form-control",
-                    }
+                    color: "#000"
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        const selectedMinutes = parseInt(result.value.minutes);
                         startTime = Date.now();
                         localStorage.setItem(startKey, startTime);
+                        localStorage.setItem("selectedMinutes", selectedMinutes); // se quiser salvar também
                         window.location.reload();
-                    } else if (result.isDismissed) {
-                        Swal.fire('Senha incorreta.');
                     }
                 });
             });

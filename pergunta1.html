@@ -7,7 +7,19 @@
     <link rel="stylesheet" href="./css/pergunta.css">
 </head>
 <body>
-    <button id="btnPausar">Pausar Música</button>
+    <div id='botoesTopo'>
+        <div id="itens">
+            <button id="btnPausar">Pausar Música</button>
+            <select id="selectRodada" class='form-select'>
+                <option value="rodada1">Rodada 1</option>
+                <option value="rodada2">Rodada 2</option>
+                <option value="rodada3">Rodada 3</option>
+                <option value="rodada4">Rodada 4</option>
+                <option value="rodada5">Rodada 5</option>
+                <option value="rodada6">Rodada 6</option>
+            </select>
+        </div>
+    </div>
 
     <div id="boxPergunta" class="row">
         <div id="enunciado" class="col-6">
@@ -40,6 +52,7 @@
     <script src="./js/jquery-3.7.1.min.js"></script>
     <script src="./js/bootstrap.bundle.min.js"></script>
     <script src="./js/sweetalert2@11.js"></script>
+    <script src="./codigos.js"></script>
     <script>
         $(document).ready(function () {
             
@@ -55,6 +68,39 @@
             }).then(() => {
                 playBackgroundAudio();
             });
+
+            let rodada;
+            if(localStorage.getItem("rodada") != null && localStorage.getItem("rodada") != ""){
+                $("#selectRodada").val(localStorage.getItem("rodada")).trigger("change");
+            }
+            
+            rodada = $("#selectRodada").val();
+
+            let codigos = getCodigos();
+            console.log(codigos);
+            let codigo = codigos[rodada];
+
+            let codStr = codigo.toString();
+
+            let num1 = parseInt(codStr[0]);
+            let num2 = parseInt(codStr[1]);
+            let num3 = parseInt(codStr[2]);
+            let num4 = parseInt(codStr[3]);
+
+
+            $("#selectRodada").on("change", function(){
+                rodada = $(this).val();
+                localStorage.setItem("rodada", rodada);
+                codigo = codigos[rodada];
+
+                codStr = codigo.toString();
+
+                num1 = parseInt(codStr[0]);
+                num2 = parseInt(codStr[1]);
+                num3 = parseInt(codStr[2]);
+                num4 = parseInt(codStr[3]);
+            });
+
 
             const backgroundAudio = document.getElementById('backgroundAudio');
             const respostaCerta = document.getElementById('respostaCerta');
@@ -123,7 +169,7 @@
                             imageHeight: 100,
                             title: "Você acertou!",
                             html: `
-                                <p>Parabéns, você acertou! O primeiro número do código é: <br><strong style="font-size:60px">3</strong></p>
+                                <p>Parabéns, você acertou! O primeiro número do código é: <br><strong style="font-size:60px">${num1}</strong></p>
                                 <p>Dirija-se ao próximo computador para receber o próximo número</p>
                             `,
                             background: "#fff url(./assets/background-papiro.png)",
