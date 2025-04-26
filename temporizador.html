@@ -63,7 +63,6 @@
             rodada = $("#selectRodada").val();
 
             let codigos = getCodigos();
-            console.log(codigos);
             let codigo = codigos[rodada];
 
             let codStr = codigo.toString();
@@ -72,8 +71,6 @@
             let num2 = parseInt(codStr[1]);
             let num3 = parseInt(codStr[2]);
             let num4 = parseInt(codStr[3]);
-
-            console.log(codigo);
 
             $("#selectRodada").on("change", function(){
                 rodada = $(this).val();
