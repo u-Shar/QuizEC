@@ -164,6 +164,8 @@
 
             // Função disparada quando o timer chega ao fim
             function onTimerEnd() {
+                localStorage.setItem("recomeçar", "sim");
+                
                 stopBackgroundAudio();
                 endAudio.play();
 
