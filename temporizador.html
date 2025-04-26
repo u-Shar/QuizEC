@@ -100,7 +100,7 @@
             let startTime = localStorage.getItem(startKey);
 
             let agora = Date.now();
-            let elapsedTime = Math.floor((now - startTime) / 1000);
+            let elapsedTime = Math.floor((agora - startTime) / 1000);
             const remainingTime = TIMER_DURATION - elapsed;
 
             if(remainingTime == 0){
