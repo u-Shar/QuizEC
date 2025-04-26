@@ -86,9 +86,6 @@
                 num2 = parseInt(codStr[1]);
                 num3 = parseInt(codStr[2]);
                 num4 = parseInt(codStr[3]);
-
-            console.log(codigo);
-
             });
 
             let tempo = 10;
@@ -101,6 +98,14 @@
             const startKey = "timerStart";
 
             let startTime = localStorage.getItem(startKey);
+
+            let agora = Date.now();
+            let elapsedTime = Math.floor((now - startTime) / 1000);
+            const remainingTime = TIMER_DURATION - elapsed;
+
+            if(remainingTime == 0){
+                localStorage.setItem("recomeçar", "sim");
+            }
 
             if(localStorage.getItem("recomeçar") == "sim"){
                 startTime = Date.now();
@@ -165,7 +170,7 @@
             // Função disparada quando o timer chega ao fim
             function onTimerEnd() {
                 localStorage.setItem("recomeçar", "sim");
-                
+
                 stopBackgroundAudio();
                 endAudio.play();
 
